@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras | PlayersKhalilMX</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .cart-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .cart-table th, .cart-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    .cart-table th { background-color: var(--bg-secondary); color: var(--text-primary); font-weight: bold; }
+    .cart-table td { color: var(--text-primary); }
+    .cart-summary { background-color: var(--bg-secondary); padding: 20px; border-radius: 5px; margin: 20px 0; }
+    .cart-summary h3 { margin-top: 0; color: var(--accent-red); }
+    .payment-methods { margin: 20px 0; }
+    .payment-option { margin: 15px 0; padding: 15px; border: 2px solid var(--bg-secondary); border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+    .payment-option:hover { border-color: var(--accent-red); background-color: rgba(239, 68, 68, 0.1); }
+    .payment-option input[type="radio"] { margin-right: 10px; }
+    .payment-option.selected { border-color: var(--accent-red); background-color: rgba(239, 68, 68, 0.1); }
+    .btn-pay { width: 100%; padding: 15px; background-color: var(--accent-red); color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    .btn-pay:hover { background-color: var(--accent-red-hover); }
+    .page { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">PlayersKhalilMX</div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Inicio</a></li>
+        <li><a href="index.html#productos" class="nav-link">Productos</a></li>
+        <li><a href="index.html#personalizacion" class="nav-link">Personalizar</a></li>
+        <li><a href="index.html#contacto" class="nav-link">Contacto</a></li>
+        <li><a href="carrito.html" class="nav-link cart-icon">Carrito <span class="cart-count">0</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page">
+    <h1>Carrito de Compras</h1>
+    
+    <div id="carritoVacio" style="text-align: center; padding: 40px;">
+      <p style="color: var(--text-secondary); font-size: 18px;">Tu carrito está vacío</p>
+      <a href="index.html#productos" class="btn btn-primary" style="display: inline-block; margin-top: 20px;">Ir a Productos</a>
+    </div>
+
+    <div id="carritoContenido" style="display: none;">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="cartItems"></tbody>
+      </table>
+
+      <div class="cart-summary">
+        <h3>Resumen del Pedido</h3>
+        <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+        <p><strong>IVA (16%):</strong> $<span id="iva">0.00</span></p>
+        <p style="font-size: 20px; color: var(--accent-red);"><strong>Total:</strong> $<span id="total">0.00</span></p>
+      </div>
+
+      <h2>Selecciona tu Método de Pago</h2>
+      <div class="payment-methods" id="paymentMethods">
+        <label class="payment-option" onclick="selectPayment(this, 'mercadopago')">
+          <input type="radio" name="paymentMethod" value="mercadopago">
+          <strong>Mercado Pago</strong>
+          <p style="margin: 5px 0 0 25px; color: var(--text-secondary);">Transferencia, Tarjeta o efectivo</p>
+        </label>
+        
+        <label class="payment-option" onclick="selectPayment(this, 'transferencia')">
+          <input type="radio" name="paymentMethod" value="transferencia">
+          <strong>Transferencia Bancaria</strong>
+          <p style="margin: 5px 0 0 25px; color: var(--text-secondary);">Directamente a nuestra cuenta</p>
+        </label>
+        
+        <label class="payment-option" onclick="selectPayment(this, 'oxxo')">
+          <input type="radio" name="paymentMethod" value="oxxo">
+          <strong>Pago en Oxxo</strong>
+          <p style="margin: 5px 0 0 25px; color: var(--text-secondary);">Paga en cualquier sucursal Oxxo</p>
+        </label>
+      </div>
+
+      <button class="btn-pay" onclick="procesarPago()">Proceder al Pago</button>
+      <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="limpiarCarrito()">Limpiar Carrito</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Cargar carrito al abrir la página
+    document.addEventListener('DOMContentLoaded', function() {
+      actualizarVistaCarrito();
+    });
+
+    function actualizarVistaCarrito() {
+      const carritoGuardado = localStorage.getItem('carrito');
+      const carrito = carritoGuardado ? JSON.parse(carritoGuardado) : [];
+      
+      const carritoVacio = document.getElementById('carritoVacio');
+      const carritoContenido = document.getElementById('carritoContenido');
+      
+      if (carrito.length === 0) {
+        carritoVacio.style.display = 'block';
+        carritoContenido.style.display = 'none';
+        return;
+      }
+      
+      carritoVacio.style.display = 'none';
+      carritoContenido.style.display = 'block';
+      
+      const cartItems = document.getElementById('cartItems');
+      cartItems.innerHTML = '';
+      
+      let subtotal = 0;
+      carrito.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.name}</td>
+          <td>$${item.price}</td>
+          <td>
+            <input type="number" value="${item.quantity}" min="1" 
+              onchange="actualizarCantidad(${index}, this.value)" 
+              style="width: 60px; padding: 5px;">
+          </td>
+          <td>$${itemTotal.toFixed(2)}</td>
+          <td><button class="btn btn-danger" onclick="eliminarItem(${index})" style="background-color: var(--accent-red); color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Eliminar</button></td>
+        `;
+        cartItems.appendChild(row);
+      });
+      
+      const iva = subtotal * 0.16;
+      const total = subtotal + iva;
+      
+      document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('iva').textContent = iva.toFixed(2);
+      document.getElementById('total').textContent = total.toFixed(2);
+      document.querySelector('.cart-count').textContent = carrito.length;
+    }
+
+    function actualizarCantidad(index, nuevaCantidad) {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      carrito[index].quantity = parseInt(nuevaCantidad);
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarVistaCarrito();
+    }
+
+    function eliminarItem(index) {
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      carrito.splice(index, 1);
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      actualizarVistaCarrito();
+    }
+
+    function limpiarCarrito() {
+      if (confirm('¿Estás seguro de que deseas limpiar el carrito?')) {
+        localStorage.removeItem('carrito');
+        actualizarVistaCarrito();
+      }
+    }
+
+    function selectPayment(element, method) {
+      document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      document.querySelector(`input[value="${method}"]`).checked = true;
+    }
+
+    function procesarPago() {
+      const metodo = document.querySelector('input[name="paymentMethod"]:checked');
+      if (!metodo) {
+        alert('Por favor selecciona un método de pago');
+        return;
+      }
+      
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const total = document.getElementById('total').textContent;
+      
+      if (metodo.value === 'mercadopago') {
+        // Aquí iría la integración de Mercado Pago
+        alert(`Redirigiendo a Mercado Pago...\nTotal a pagar: $${total}`);
+        // window.location.href = 'URL_DE_MERCADO_PAGO';
+      } else if (metodo.value === 'transferencia') {
+        mostrarInstrucciones('transferencia', total);
+      } else if (metodo.value === 'oxxo') {
+        mostrarInstrucciones('oxxo', total);
+      }
+    }
+
+    function mostrarInstrucciones(metodo, total) {
+      let mensaje = '';
+      if (metodo === 'transferencia') {
+        mensaje = `INSTRUCCIONES DE TRANSFERENCIA BANCARIA\n\nTotal a transferir: $${total}\n\nDatos de la cuenta:\nBanco: BBVA\nNombre: PlayersKhalilMX\nCLABE: 012680123456789012\n\nUna vez realizada la transferencia, envía el comprobante a: contacto@playeraskhalilmx.com`;
+      } else if (metodo === 'oxxo') {
+        mensaje = `PAGO EN OXXO\n\nTotal a pagar: $${total}\n\nDirecciones a la sucursal Oxxo más cercana y proporciona el siguiente código:\nCÓdigo de pago: PKM-${Date.now()}\n\nConserva el comprobante y envía una foto a: contacto@playeraskhalilmx.com`;
+      }
+      alert(mensaje);
+      // Limpiar carrito después del pago
+      localStorage.removeItem('carrito');
+      actualizarVistaCarrito();
+      alert('\n¡Pedido registrado! Te contactaremos pronto.');
+    }
+  </script>
+</body>
+</html>
