@@ -1,4 +1,4 @@
-// DATOS DE PRODUCTOS
+// DATOS DE PRODUCTOS CON LINKS DE PAGO INTEGRADOS
 const productos = [
   {
     code: 'PC01',
@@ -7,6 +7,7 @@ const productos = [
     type: 'Cuello V',
     sizes: ['S', 'M', 'G', 'XL'],
     price: 180,
+    paymentLink: 'https://mpago.la/2sZT4iM',
     colors: ['Negro', 'Blanco', 'Rosa', 'Azul Rey', 'Azul Marino', 'Morado', 'Café', 'Gris'],
     description: 'Playera de algodón puro con cuello en V'
   },
@@ -17,6 +18,7 @@ const productos = [
     type: 'Cuello V',
     sizes: ['S', 'M', 'G'],
     price: 180,
+    paymentLink: 'https://mpago.la/2sZT4iM',
     colors: ['Negro', 'Blanco', 'Rosa', 'Azul Rey', 'Azul Marino', 'Morado', 'Café', 'Gris'],
     description: 'Playera de algodón puro con cuello en V para dama'
   },
@@ -27,6 +29,7 @@ const productos = [
     type: 'Cuello Redondo',
     sizes: ['S', 'M', 'G', 'XL', '2XL'],
     price: 200,
+    paymentLink: 'https://mpago.la/26J3w3Z',
     colors: ['Negro', 'Blanco', 'Rosa', 'Azul Rey', 'Azul Marino', 'Morado', 'Café', 'Rojo', 'Verde Oscuro', 'Gris'],
     description: 'Playera clásica de algodón con cuello redondo'
   },
@@ -37,6 +40,7 @@ const productos = [
     type: 'Cuello Redondo',
     sizes: ['S', 'M', 'G', 'XL'],
     price: 200,
+    paymentLink: 'https://mpago.la/26J3w3Z',
     colors: ['Negro', 'Blanco', 'Rosa', 'Azul Rey', 'Azul Marino', 'Morado', 'Café', 'Rojo', 'Verde Oscuro', 'Gris'],
     description: 'Playera clásica de algodón con cuello redondo para dama'
   },
@@ -47,6 +51,7 @@ const productos = [
     type: 'Manga Larga Normal',
     sizes: ['S', 'M', 'G', 'XL'],
     price: 250,
+    paymentLink: 'https://mpago.la/2Z6pR37',
     colors: ['Negro', 'Azul Marino'],
     description: 'Playera cómoda de manga larga'
   },
@@ -57,6 +62,7 @@ const productos = [
     type: 'Manga Larga Normal',
     sizes: ['S', 'M'],
     price: 250,
+    paymentLink: 'https://mpago.la/2Z6pR37',
     colors: ['Negro', 'Azul Marino'],
     description: 'Playera cómoda de manga larga para dama'
   },
@@ -67,6 +73,7 @@ const productos = [
     type: 'Manga Larga Bicolor',
     sizes: ['S', 'M', 'G'],
     price: 250,
+    paymentLink: 'https://mpago.la/1BAUPzG',
     colors: ['Azul Marino', 'Negro'],
     description: 'Playera de diseño bicolor con mangas de contraste'
   },
@@ -77,6 +84,7 @@ const productos = [
     type: 'Manga Larga Bicolor',
     sizes: ['S', 'M', 'G'],
     price: 250,
+    paymentLink: 'https://mpago.la/1BAUPzG',
     colors: ['Azul Marino', 'Negro'],
     description: 'Playera de diseño bicolor con mangas de contraste para dama'
   },
@@ -87,6 +95,7 @@ const productos = [
     type: 'Sudadera Con Capucha',
     sizes: ['S', 'M', 'G', 'XL'],
     price: 300,
+    paymentLink: 'https://mpago.la/1AsZwXC',
     colors: ['Negro', 'Blanco', 'Azul Marino', 'Azul Rey', 'Rosa', 'Morado'],
     description: 'Sudadera cómoda y versátil con capucha'
   },
@@ -97,6 +106,7 @@ const productos = [
     type: 'Sudadera Sin Capucha',
     sizes: ['S', 'M', 'G', 'XL'],
     price: 300,
+    paymentLink: 'https://mpago.la/2HLmXh2',
     colors: ['Negro', 'Blanco', 'Azul Marino', 'Azul Rey', 'Rosa', 'Morado'],
     description: 'Sudadera cómoda sin capucha'
   }
@@ -116,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function inicializarProductos() {
   const productosGrid = document.querySelector('.productos-grid');
   productosGrid.innerHTML = '';
-
   productos.forEach(producto => {
     const productoCard = document.createElement('div');
     productoCard.classList.add('producto-card');
@@ -126,18 +135,22 @@ function inicializarProductos() {
         <h3>${producto.name}</h3>
         <p>${producto.description}</p>
         <div class="producto-precio">$${producto.price}</div>
-        <button class="btn btn-primary" onclick="agregarAlCarrito('${producto.code}')">Añadir al Carrito</button>
+        <button class="btn btn-primary" onclick="redirigirAPago('${producto.code}', ${producto.price}, '${producto.paymentLink}')">Comprar Ahora</button>
       </div>
     `;
     productosGrid.appendChild(productoCard);
   });
 }
 
-// AÑADIR AL CARRITO
-function agregarAlCarrito(productCode) {
+// REDIRIGIR A PAGO
+function redirigirAPago(productCode, precio, paymentLink) {
   const producto = productos.find(p => p.code === productCode);
   if (!producto) return;
   
+  // Abrir el link de pago en una nueva pestaña
+  window.open(paymentLink, '_blank');
+  
+  // También añadir al carrito
   carrito.push({
     ...producto,
     cartId: Date.now()
@@ -145,7 +158,7 @@ function agregarAlCarrito(productCode) {
   
   guardarCarrito();
   actualizarCarrito();
-  alert(`${producto.name} añadido al carrito`);
+  alert(`${producto.name} - Se abrirá el pago. Si necesitas ayuda, contacta con nosotros.`);
 }
 
 // GUARDAR CARRITO EN LOCAL STORAGE
