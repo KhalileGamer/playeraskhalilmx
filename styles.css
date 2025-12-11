@@ -88,7 +88,7 @@ html {
 
 /* HERO SECTION */
 .hero {
-    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 50%, var(--dark-red) 100%);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue) 50%, var(--dark-red) 100%);
     color: var(--white);
     padding: 120px 2rem;
     text-align: center;
@@ -161,7 +161,7 @@ html {
 }
 
 .btn-secondary:hover {
-    background: var(--dark-blue);
+    background: var(--primary-blue);
     transform: translateY(-2px);
 }
 
@@ -176,7 +176,7 @@ html {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: var(--dark-blue);
+    color: var(--primary-blue);
     border-bottom: 3px solid var(--dark-red);
     padding-bottom: 1rem;
 }
@@ -205,7 +205,7 @@ html {
 .producto-img {
     width: 100%;
     height: 250px;
-    background: linear-gradient(135deg, var(--black) 0%, var(--dark-blue) 100%);
+    background: linear-gradient(135deg, var(--black) 0%, var(--primary-blue) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -219,7 +219,7 @@ html {
 }
 
 .producto-info h3 {
-    color: var(--dark-blue);
+    color: var(--primary-blue);
     margin-bottom: 0.5rem;
 }
 
@@ -247,7 +247,7 @@ html {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: var(--dark-blue);
+    color: var(--primary-blue);
 }
 
 .personalizacion-container {
@@ -268,7 +268,7 @@ html {
 .shirt-preview {
     width: 300px;
     height: 400px;
-    background: linear-gradient(to bottom, var(--black) 0%, var(--dark-blue) 100%);
+    background: linear-gradient(to bottom, var(--black) 0%, var(--primary-blue) 100%);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -300,7 +300,7 @@ html {
 
 .control-group label {
     font-weight: bold;
-    color: var(--dark-blue);
+    color: var(--primary-blue);
 }
 
 .control-group input[type="color"],
@@ -335,7 +335,7 @@ html {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: var(--dark-blue);
+    color: var(--primary-blue);
 }
 
 .carrito-container {
@@ -370,7 +370,7 @@ html {
 }
 
 .item-info h4 {
-    color: var(--dark-blue);
+    color: var(--primary-blue);
     margin-bottom: 0.5rem;
 }
 
