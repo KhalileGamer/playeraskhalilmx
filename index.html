@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayersKhalilMX - Playeras Personalizadas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">PlayersKhalilMX</div>
+            <ul class="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#productos" class="nav-link">Productos</a></li>
+                <li><a href="#personalizacion" class="nav-link">Personalizar</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li><a href="#carrito" class="nav-link cart-icon">Carrito <span class="cart-count">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Playeras Personalizadas</h1>
+            <p>Expresa tu estilo con diseños únicos y personalizados</p>
+            <button class="btn btn-primary" onclick="scrollToSection('productos')">Ver Productos</button>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE PRODUCTOS -->
+    <section id="productos" class="productos-section">
+        <h2>Nuestros Productos</h2>
+        <div class="productos-grid">
+            <!-- Los productos se generarán con JavaScript -->
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE PERSONALIZACIÓN -->
+    <section id="personalizacion" class="personalizacion-section">
+        <h2>Personaliza tu Playera</h2>
+        <div class="personalizacion-container">
+            <div class="preview-area">
+                <div class="shirt-preview" id="shirtPreview">
+                    <p id="previewText">Tu Diseño Aquí</p>
+                </div>
+            </div>
+            <div class="controls-area">
+                <div class="control-group">
+                    <label for="colorInput">Color de la Playera:</label>
+                    <input type="color" id="colorInput" value="#1a1a1a">
+                </div>
+                <div class="control-group">
+                    <label for="textInput">Tu Texto:</label>
+                    <input type="text" id="textInput" placeholder="Escribe aquí" maxlength="20">
+                </div>
+                <div class="control-group">
+                    <label for="textColor">Color del Texto:</label>
+                    <input type="color" id="textColor" value="#ffffff">
+                </div>
+                <button class="btn btn-primary" onclick="agregarAlCarrito('personalizado')">Añadir al Carrito</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE CARRITO -->
+    <section id="carrito" class="carrito-section">
+        <h2>Tu Carrito de Compras</h2>
+        <div class="carrito-container">
+            <div class="carrito-items" id="carritoItems">
+                <p class="carrito-vacio">Tu carrito está vacío</p>
+            </div>
+            <div class="carrito-resumen">
+                <h3>Resumen</h3>
+                <p>Subtotal: $<span id="subtotal">0.00</span></p>
+                <p>IVA (16%): $<span id="iva">0.00</span></p>
+                <h4>Total: $<span id="total">0.00</span></h4>
+                <button class="btn btn-primary btn-comprar" onclick="procesarCompra()">Proceder al Pago</button>
+                <button class="btn btn-secondary" onclick="limpiarCarrito()">Limpiar Carrito</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer" id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>PlayersKhalilMX</h4>
+                <p>Playeras personalizadas de alta calidad</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>Email: info@playeraskhalilmx.com</p>
+                <p>Teléfono: +52 (123) 456-7890</p>
+            </div>
+            <div class="footer-section">
+                <h4>Redes Sociales</h4>
+                <p>Instagram | Facebook | Twitter</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PlayersKhalilMX. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
